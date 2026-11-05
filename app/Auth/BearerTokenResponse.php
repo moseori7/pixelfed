@@ -19,7 +19,7 @@ class BearerTokenResponse extends \League\OAuth2\Server\ResponseTypes\BearerToke
     {
         return [
         	'created_at' => time(),
-        	'scope' => 'read write follow push'
+        	'scope' => implode(' ', array_map(function($s) { return $s->getIdentifier(); }, $accessToken->getScopes()))
         ];
     }
 }

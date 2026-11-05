@@ -42,6 +42,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         return response()->json(['supported' => true]);
     }
@@ -50,6 +51,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $res = AdminStatsService::summary();
         $res['autospam_count'] = AccountInterstitial::whereType('post.autospam')
@@ -62,6 +64,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $appeals = AccountInterstitial::whereType('post.autospam')
             ->whereNull('appeal_handled_at')
@@ -97,6 +100,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $this->validate($request, [
             'action' => 'required|in:dismiss,approve,dismiss-all,approve-all,delete-post,delete-account',
@@ -241,6 +245,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $reports = Report::whereNull('admin_seen')
             ->orderBy('created_at','desc')
@@ -287,6 +292,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $this->validate($request, [
             'action'    => 'required|string',
@@ -345,6 +351,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
         abort_unless(config('instance.enable_cc'), 400);
 
         return collect([
@@ -388,6 +395,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
         abort_unless(config('instance.enable_cc'), 400);
 
         $this->validate($request, [
@@ -450,6 +458,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
         $this->validate($request, [
             'sort' => 'sometimes|in:asc,desc',
         ]);
@@ -468,6 +477,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $id = $request->input('user_id');
         $key = 'pf-admin-api:getUser:byId:' . $id;
@@ -499,6 +509,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $this->validate($request, [
             'id' => 'required',
@@ -671,6 +682,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $this->validate($request, [
             'q' => 'sometimes',
@@ -709,6 +721,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $id = $request->input('id');
         $res = Instance::findOrFail($id);
@@ -720,6 +733,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $this->validate($request, [
             'id' => 'required',
@@ -744,6 +758,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin == 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         $this->validate($request, [
             'id' => 'required',
@@ -762,6 +777,7 @@ class AdminApiController extends Controller
     {
         abort_if(!$request->user(), 404);
         abort_unless($request->user()->is_admin === 1, 404);
+        abort_unless($request->user()->tokenCan('admin:read'), 403);
 
         if($request->has('refresh')) {
             Cache::forget('admin-api:instance-all-stats-v1');

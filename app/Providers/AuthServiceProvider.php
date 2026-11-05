@@ -41,7 +41,9 @@ class AuthServiceProvider extends ServiceProvider
                 'read' => 'Full read access to your account',
                 'write' => 'Full write access to your account',
                 'follow' => 'Ability to follow other profiles',
-                'push'  => ''
+                'push'  => '',
+                'admin:read' => 'Admin read access',
+                'admin:write' => 'Admin write access'
             ]);
         }
 
